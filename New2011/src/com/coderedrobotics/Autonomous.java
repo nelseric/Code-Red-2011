@@ -30,19 +30,30 @@ public class Autonomous {
         this.elbow = elbow;
         startTime = System.currentTimeMillis();
     }
+    private double timer = 0;
 
     public void step() {
         if (!lineTracker.isDone()) {
             lineTracker.step();
             claw.set(0.5);
             shoulder.up();
-            if(elbowEncoder.getDistance() < 90){
-                elbow.set(.375);
+            if (elbowEncoder.getDistance() < 90) {
+                elbow.set(.4125);
             } else {
                 elbow.set(0);
             }
-        }
+        } else {
 
+            claw.set(-.5);
+            if (timer == 0) {
+                timer = currentTime();
+            }
+            if (currentTime() - timer < 1) { //change to actual encoder distance
+                drive.setVector(-0.2, 0);
+            } else {
+                drive.setVector(timer, timer);
+            }
+        }
     }
 
     private double currentTime() {
