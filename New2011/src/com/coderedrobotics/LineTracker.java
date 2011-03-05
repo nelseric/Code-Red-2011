@@ -17,11 +17,12 @@ public class LineTracker {
     private Drive drive;
     private boolean b = true;
     private DigitalInput digitalInputLeft, digitalInputMiddle, digitalInputRight;
+    private boolean done = false;
 
     public void step() {
         int i = ((digitalInputLeft.get() ? 1 : 0) * 4 + (digitalInputMiddle.get() ? 1 : 0) * 2 + (digitalInputRight.get() ? 1 : 0));
         switch (i) {
-            case 7:
+            case 7: // nowhere near the line
                 System.out.println("Case 7");
                 if (b) {
                     drive.setVector(0, -getLineFollowingSpeed() * 2);
@@ -29,16 +30,16 @@ public class LineTracker {
                     drive.setVector(0, getLineFollowingSpeed() * 2);
                 }
                 break;
-            case 6:
+            case 6: // right of line
                 b = true;
                 drive.setVector(0, -getLineFollowingSpeed() * 2);
                 System.out.println("Case 6");
                 break;
-            case 5:
+            case 5: // on the line
                 System.out.println("Case 5");
                 drive.setVector(getLineFollowingSpeed(), 0);
                 break;
-            case 4:
+            case 4: // left of line
                 System.out.println("Case 4");
                 b = true;
                 drive.setVector(getLineFollowingSpeed(), -getLineFollowingSpeed());
@@ -57,8 +58,9 @@ public class LineTracker {
                 b = false;
                 drive.setVector(getLineFollowingSpeed(), getLineFollowingSpeed());
                 break;
-            case 0:
+            case 0: // hitting the t
                 System.out.println("Case 0");
+                done = true;
                 drive.setVector(-getLineFollowingSpeed() / 2, 0);
                 break;
         }
@@ -70,6 +72,10 @@ public class LineTracker {
         digitalInputLeft = l;
         digitalInputMiddle = m;
         digitalInputRight = r;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 
     public double getLineFollowingSpeed() {

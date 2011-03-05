@@ -33,15 +33,17 @@ public class New2011 extends IterativeRobot {
     DigitalInput open, closed;
     PIDController elbow;
     Drive drive;
-    AutoDrive autoDrive;
+    Autonomous autoDrive;
 
     public void robotInit() {
-        compressor = new Compressor(Wiring.COMPRESSOR_PRESSURE_IN, Wiring.COMPRESSOR_OUT);
+        compressor = new Compressor(
+                Wiring.COMPRESSOR_PRESSURE_IN, Wiring.COMPRESSOR_OUT);
         compressor.start();
         driverGamepad = new Gamepad(1);
         armGamepad = new Gamepad(2);
 
-        elbowEncoder = new Encoder(Wiring.ELBOW_ENCODER_A, Wiring.ELBOW_ENCODER_B, true);
+        elbowEncoder = new Encoder(
+                Wiring.ELBOW_ENCODER_A, Wiring.ELBOW_ENCODER_B, true);
         elbowEncoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance);
         elbowEncoder.setDistancePerPulse(.2);
 
@@ -66,26 +68,19 @@ public class New2011 extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        autoDrive = new AutoDrive(drive, new LineTracker(drive, new DigitalInput(Wiring.LEFT_LINE_SENSOR_PORT), new DigitalInput(Wiring.MIDDLE_LINE_SENSOR_PORT), new DigitalInput(Wiring.RIGHT_LINE_SENSOR_PORT)), shoulder, claw, elbowJaguar);
+        autoDrive = new Autonomous(drive,
+                new LineTracker(drive,
+                    new DigitalInput(Wiring.LEFT_LINE_SENSOR_PORT),
+                    new DigitalInput(Wiring.MIDDLE_LINE_SENSOR_PORT),
+                    new DigitalInput(Wiring.RIGHT_LINE_SENSOR_PORT)),
+                shoulder, claw, elbowJaguar, elbowEncoder);
     }
 
     public void autonomousPeriodic() {
-        //autoDrive.step();
+        autoDrive.step();
 
-        /*System.out.print("isClosed() = " + claw.isClosed());
-        System.out.println("isOpen() = " + claw.isOpen());
-
-        if (armGamepad.getAButton()) {
-        claw.set(0.5);
-        System.out.println("A");
-        } else {
-        if (armGamepad.getBButton()) {
-        claw.set(-0.5);
-        System.out.println("B");
-        } else {
-        claw.set(0);
-        }
-        }*/
+        
+        
     }
 
     public void teleopInit() {
