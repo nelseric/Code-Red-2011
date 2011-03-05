@@ -51,7 +51,7 @@ public class Autonomous {
             if (currentTime() - timer < 1) { //change to actual encoder distance
                 drive.setVector(-0.2, 0);
             } else {
-                drive.setVector(timer, timer);
+                drive.setVector(0, 0);
             }
         }
     }
